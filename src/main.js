@@ -12,10 +12,10 @@ document.getElementById('revealexpress').addEventListener('loaded', function(eve
   new Chart(document.getElementById('chart-cms').getContext('2d'), {
     type: 'pie',
     data: {
-      labels: ['WordPress', 'Joomla!', 'Drupal', 'Wix', 'Aucun'],
+      labels: ['WordPress', 'Joomla!', 'Drupal', 'Wix', 'Autre', 'Aucun'],
       datasets: [{
-        data: [29.6, 3.1, 2.2, 0.5, 50.6],
-        backgroundColor: ["rgb(0, 135, 190)", "rgb(113, 190, 80)", "rgb(40, 168, 224)", "rgb(255, 189, 120)", "rgb(101, 123, 131)"]
+        data: [29.6, 3.1, 2.2, 0.5, 14, 50.6],
+        backgroundColor: ["rgb(0, 135, 190)", "rgb(113, 190, 80)", "rgb(40, 168, 224)", "rgb(255, 189, 120)", "rgb(101, 123, 131)", "rgb(0, 0, 0)"]
       }]
     },
     options: {}
