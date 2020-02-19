@@ -1,0 +1,55 @@
+@import "blockquote";
+
+.reveal {
+
+    pre[class*="language-"] {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 0.6em;
+        &:not(.line-numbers) {
+            padding: 0.5em;
+        }
+        code {
+            padding: 0;
+        }
+    }
+
+    ul {
+        display: block;
+        margin-bottom: 0.5em;
+    }
+
+    img.zoom {
+        transition: -webkit-transform 0.25s ease;
+        &:hover {
+            transform: scale(1.5);
+            z-index: 2;
+        }
+    }
+
+    .logos {
+        .container {
+            align-items: center;
+            .fa {
+                font-size: 5em;
+            }
+        }
+    }
+
+    .showcases {
+        .container {
+            .col {
+                padding: 0 1em;
+                img {
+                    height: 150px;
+                }
+            }
+        }
+    }
+
+    .infographic-container {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+
+}

@@ -1,0 +1,117 @@
+<section id="core">
+
+    <section>
+        <h2>Fonctionnement interne</h2>
+    </section>
+
+    <section>
+        <h3>Les fichiers template</h3>
+        <img src="assets/images/hierarchy.png" class="zoom" alt="WordPress hiérarchie">
+        <footer>
+            <a href="https://wphierarchy.com/" class="info" target="_blank">WP Hierarchy</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Les fichiers template</h3>
+        <p>A chaque chargement de page, WordPress va donc rechercher le fichier de template correspondant.</p>
+        <p>Par exemple, pour afficher une page d'accueil listant les derniers articles, WordPress va suivre le chemin suivant :</p>
+        <img src="assets/images/hierarchy-demo.png" class="zoom" alt="WordPress hiérarchie">
+    </section>
+
+    <section>
+        <h3>La boucle Wordpress</h3>
+        <p>La boucle (The Loop) de Wordpress permet d’itérer sur les contenus à afficher sur une page template.</p>
+        <pre><code class="language-php"><?php if (have_posts()) : ?>
+    <?php while (have_posts()) : the_post(); ?>
+        &lt;!-- Code HTML pour afficher un ou plusieurs éléments --&gt;
+    <?php endwhile; ?>
+<?php else: ?>
+    &lt;!-- Code HTML si aucun élément à afficher --&gt;
+<?php endif; ?></code></pre>
+        <p>Il faut utiliser la boucle pour afficher une liste d'article, un seul article, une page, un employé, une liste de recettes... tout type de contenu.</p>
+    </section>
+
+    <section>
+        <h3>La boucle Wordpress</h3>
+        <p>Le code peut également être condensé de cette façon :</p>
+        <pre><code class="language-php"><?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+    &lt;!-- Code HTML pour afficher un ou plusieurs éléments --&gt;
+<?php endwhile; else : ?>
+    &lt;!-- Code HTML si aucun élément à afficher --&gt;
+<?php endif; ?></code></pre>
+        <footer>
+            <a href="https://codex.wordpress.org/The_Loop" class="info" target="_blank">The Loop</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>La boucle Wordpress</h3>
+        <p>A l'intérieur de la boucle, on pourra utiliser les fonctions suivantes :</p>
+        <pre><code class="language-php"><?php
+the_title(); // Afficher le titre
+the_content(); // Afficher le contenu
+the_excerpt(); // Afficher l'extrait (description courte)
+the_post_thumbnail(); // Afficher l'image à la une
+the_permalink(); // Afficher le lien vers la page de détail d'un contenu
+?></code></pre>
+        <p>Les fonctions ayant un nom commençant par <code class="language-php">the_</code> affiche une données.</p>
+        <p>Il existe souvent une fonction équivalente permettant de récupérer la données sans l'afficher (ex : <code class="language-php">get_the_title()</code>).</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/the_title/" class="warning" target="_blank">Consulter la documentation avant d'utiliser une fonction !</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Les fonctions de WordPress</h3>
+        <p>Il existe de nombreuses fonctions propres à WordPress. En voici quelques-unes souvent utilisées :</p>
+        <table style="font-size: 0.8em;">
+            <tbody>
+            <tr>
+                <td>
+                    <a href="https://codex.wordpress.org/Function_Reference/get_header" target="_blank"><code class="language-php">get_header()</code></a>
+                    <a href="https://codex.wordpress.org/Function_Reference/get_footer" target="_blank"><code class="language-php">get_footer()</code></a>
+                    <a href="https://codex.wordpress.org/Function_Reference/get_sidebar" target="_blank"><code class="language-php">get_sidebar()</code></a>
+                </td>
+                <td>Afficher un bloc du template</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="https://codex.wordpress.org/Function_Reference/bloginfo" target="_blank"><code class="language-php">bloginfo()</code></a>
+                </td>
+                <td>Informations sur le site internet (nom, description, url...)</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="https://codex.wordpress.org/Function_Reference/wp_enqueue_script" target="_blank"><code class="language-php">wp_enqueue_script()</code></a>
+                    <a href="https://codex.wordpress.org/Function_Reference/wp_enqueue_style" target="_blank"><code class="language-php">wp_enqueue_style()</code></a>
+                </td>
+                <td>Charger des fichiers CSS / JS du thème</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="https://codex.wordpress.org/Function_Reference/add_theme_support" target="_blank"><code class="language-php">add_theme_support()</code></a>
+                </td>
+                <td>Ajouter des fonctionnalités (Image à la une, format des articles, html5...)</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="https://codex.wordpress.org/Function_Reference/add_action" target="_blank"><code class="language-php">add_action()</code></a>
+                </td>
+                <td>Accrocher (hook) une fonction PHP à une action (fonction) de Wordpress (<a href="https://codex.wordpress.org/Plugin_API/Action_Reference" target="_blank">liste des actions accrochables</a>)</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h3>Résumé</h3>
+        <div class="infographic-container">
+            <img src="assets/images/wordpress-theme-infographic.png" alt="WordPress Infographie">
+        </div>
+        <footer>
+            <a href="https://yoast.com/wordpress-theme-anatomy/" class="info" target="_blank">Source</a>
+        </footer>
+    </section>
+
+</section>

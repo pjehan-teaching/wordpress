@@ -1,0 +1,510 @@
+<section id="theme">
+
+    <section>
+        <h2>Créer un thème "from scratch"</h2>
+    </section>
+
+    <section>
+        <h3>Sommaire</h3>
+        <ul>
+            <li><a href="#create-theme">Créer un thème</a></li>
+            <li><a href="#layout">Layout</a></li>
+            <li><a href="#menus">Menus</a></li>
+            <li><a href="#sidebars">Sidebars (Widgets)</a></li>
+            <li><a href="#custom-post-type">Custom Post Type</a></li>
+            <li><a href="#wp-query">WP Query</a></li>
+            <li><a href="#taxonomy">Taxonomie</a></li>
+            <li><a href="#custom-fields">Custom Fields (ACF)</a></li>
+        </ul>
+    </section>
+
+    <section id="create-theme">
+        <h3>Créer un thème - Création du dossier</h3>
+        <p>Pour créer un thème WordPress, il faut tout d'abord créer un nouveau dossier dans <code class="language-shell">wp-content/themes</code> et créer à l'intérieur au minimum 2 fichiers :</p>
+        <ul>
+            <li><code>style.css</code> : Fichier contenant un commentaire permettant de décrire le thème</li>
+            <li><code>index.php</code> : Fichier de template par défaut utilisé pour l'ensemble des pages</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Créer un thème - Le fichier style.css</h3>
+        <p>Le fichier <code>style.css</code> doit obligatoirement commencé par une zone de commentaire permettant de décrire les infos du thèmes :</p>
+        <pre><code class="language-css">/*
+Theme Name: Twenty Thirteen
+Theme URI: http://wordpress.org/themes/twentythirteen
+Author: the WordPress team
+Author URI: http://wordpress.org/
+Description: The 2013 theme for WordPress takes us back to the blog, featuring a full range of post formats, each displayed beautifully in their own unique way. Design details abound, starting with a vibrant color scheme and matching header images, beautiful typography and icons, and a flexible layout that looks great on any device, big or small.
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: black, brown, orange, tan, white, yellow, light, one-column, two-columns, right-sidebar, flexible-width, custom-header, custom-menu, editor-style, featured-images, microformats, post-formats, rtl-language-support, sticky-post, translation-ready
+Text Domain: twentythirteen
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/</code></pre>
+    </section>
+
+    <section>
+        <h3>Créer un thème - Le fichier index.php</h3>
+        <p>Le fichier <code>index.php</code> doit généralement faire appel au header et au footer et inclure le code de la boucle de WordPress pour afficher du contenu :</p>
+        <pre><code class="language-php"><?php get_header(); ?>
+
+<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+    <?php the_title(); ?>
+    <?php the_content(); ?>
+<?php endwhile; else : ?>
+    &lt;p&gt;Aucun élément à afficher&lt;/p&gt;
+<?php endif; ?>
+
+<?php get_footer(); ?></code></pre>
+    </section>
+
+    <section>
+        <h3>Créer un thème - Le fichier functions.php</h3>
+        <p>Il est souvent utile d'ajouter également un fichier <code>functions.php</code> :</p>
+        <pre><code class="language-php"><?php
+add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
+function my_theme_enqueue_styles() {
+    wp_enqueue_style('theme-style', get_stylesheet_directory_uri() . '/style.css', [], wp_get_theme()->get('Version'));
+}</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/themes/release/required-theme-files/" class="info" target="_blank">D'autres fichiers sont nécessaires pour publier un thème</a>
+        </footer>
+    </section>
+
+    <section id="layout">
+        <h3>Layout - Le fichier header.php</h3>
+        <p>Les fichiers <code>header.php</code> et <code>footer.php</code> permettent de ségmenter le code source des pages.</p>
+        <p>Voici un extrait type du fichier <code>header.php</code> :</p>
+        <pre><code class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html <?php language_attributes(); ?>&gt;
+&lt;head&gt;
+    &lt;meta charset="<?php bloginfo('charset'); ?>" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+    &lt;title&gt;<?php wp_title(); ?>&lt;/title&gt;
+    <?php wp_head(); ?>
+&lt;/head&gt;
+
+&lt;body <?php body_class(); ?>&gt;
+    <?php wp_body_open(); ?></code></pre>
+    </section>
+
+    <section>
+        <h3>Layout - Les fonctions du header</h3>
+        <ul>
+            <li><code class="language-php">language_attributes()</code> : Affiche automatiquement la langue dans la balise <code class="language-html">&lt;html&gt;</code>.</li>
+            <li><code class="language-php">bloginfo('charset')</code> : Affiche l'encodage définie dans l'administration du site (Réglages > Lecture).</li>
+            <li><code class="language-php">wp_title()</code> : Affiche le titre de la page en cours.</li>
+            <li><code class="language-php">wp_head()</code> : <strong>Très important !!</strong> Permet de déclencher l'action <code>wp_head</code>. Sans l'appel à cette fonction, les fichiers CSS ne seront pas chargés !</li>
+            <li><code class="language-php">body_class()</code> : Affiche les classes CSS de la page en cours.</li>
+            <li><code class="language-php">wp_body_open()</code> : Ajouté dans la version 5.2 de WordPress. Permet d'utiliser le système de hook pour ajouter des contenus à cette emplacement.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Layout - Le fichier footer.php</h3>
+        <p>Voici un extrait type du fichier <code>footer.php</code> :</p>
+        <pre><code class="language-php">        <?php wp_footer(); ?>
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <p>La fonction <code class="language-php">wp_footer()</code> permet entre autre de charger les fichier JS.</p>
+        <footer>
+            <a href="#" class="danger">Ne surtout pas oublier les fonctions <code class="language-php">wp_head()</code> et <code class="language-php">wp_footer()</code> !</a>
+        </footer>
+    </section>
+
+    <section id="menus">
+        <h3>Créer un menu</h3>
+        <p>Pour ajouter des menus dans WordPress, il faut dans <strong>définir des zones</strong> dans lesquelles ils seront affichés.</p>
+        <p>On peut par exemple créer un menu principal, un menu dans le footer et un autre affiché uniquement sur certaines pages.</p>
+    </section>
+
+    <section>
+        <h3>Créer un menu - Liste des fonctions</h3>
+        <p>WordPress contient plusieurs fonctions permettant de créer des menus :</p>
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <code class="language-php">register_nav_menus()</code>
+                    <code class="language-php">register_nav_menu()</code>
+                    <code class="language-php">unregister_nav_menu()</code>
+                </td>
+                <td>Enregistré un nouvel emplacement pour un menu (visible côté admin).</td>
+            </tr>
+            <tr>
+                <td>
+                    <code class="language-php">has_nav_menu()</code>
+                </td>
+                <td>Vérifier si l'administrateur du site a créé un menu pour un emplacement.</td>
+            </tr>
+            <tr>
+                <td>
+                    <code class="language-php">wp_nav_menu()</code>
+                </td>
+                <td>Afficher un menu (côté front).</td>
+            </tr>
+            </tbody>
+        </table>
+        <footer>
+            <a href="https://codex.wordpress.org/Navigation_Menus" class="info" target="_blank">Documentation Navigation Menus</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Créer un menu - La fonction register_nav_menu</h3>
+        <p>La fonction <code class="language-php">register_nav_menu()</code> prend deux paramètres. Le premier est l'identifiant unique du menu et le second sa description :</p>
+        <pre><code class="language-php">add_action('after_setup_theme', 'register_my_menu');
+function register_my_menu() {
+    register_nav_menu('primary', 'Menu principal');
+}</code></pre>
+        <p>Ce code peut être ajouté au fichier <code>functions.php</code> et doit être appelé via le hook <code>after_setup_theme</code>.</p>
+        <footer>
+            <a href="https://codex.wordpress.org/Function_Reference/register_nav_menu" class="info" target="_blank">Documentation de la fonction register_nav_menu()</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Créer un menu - La fonction wp_nav_menu</h3>
+        <p>La fonction <code class="language-php">wp_nav_menu()</code> prend un paramètre. Ce paramètre doit être un tableau associatif contenant les paramètres du menu :</p>
+        <pre><code class="language-php">wp_nav_menu([
+    'theme_location' => 'primary', // Doit correspondre au premier paramètre de la fonction register_nav_menu()
+    'container' => 'nav',
+    'container_class' => 'main-menu'
+]);</code></pre>
+        <p>Ce code peut être ajouté dans un fichier de template comme par exemple le fichier <code>header.php</code>.</p>
+        <p>Consultez la <a href="https://codex.wordpress.org/Function_Reference/wp_nav_menu" target="_blank">documentation</a> pour plus d'informations sur l'utilisation de la fonction <code class="language-php">wp_nav_menu()</code>.</p>
+        <footer>
+            <a href="https://codex.wordpress.org/Function_Reference/wp_nav_menu" class="info" target="_blank">Documentation de la fonction wp_nav_menu()</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Créer un menu - Les Walkers</h3>
+        <p>La fonction <code class="language-php">wp_nav_menu()</code> va générer le code HTML du menu avec <strong>ses balises et ses classes CSS</strong>.</p>
+        <p>Il est possible de paramétrer cela en utilisant les paramètres de la fonction mais cependant, cela ne <strong>permet pas toujours d'obtenir le résultat souhaité</strong>.</p>
+        <p>Pour une personnalisation plus poussée du menu qui sera généré, il est possible de créer un "<strong>Walker</strong>" et ainsi de customiser plus finement le code généré par la fonction.</p>
+        <p>Il est possible de trouver sur internet des walkers pour différents framework CSS.</p>
+        <footer>
+            <a href="https://github.com/wp-bootstrap/wp-bootstrap-navwalker" class="info" target="_blank">WP Bootstrap Navwalker</a>
+        </footer>
+    </section>
+
+    <section id="sidebars">
+        <h3>Créer des sidebars</h3>
+        <p>Les sidebars sont des <strong>zones</strong> permettant à l'administrateur du site de <strong>positionner des widgets</strong>.</p>
+        <p>On peut par exemple créer une zone de widgets sur la page d'accueil, dans le pied de page ou encore sur la page de contact.</p>
+    </section>
+
+    <section>
+        <h3>Créer des sidebars - Liste des fonctions</h3>
+        <p>WordPress contient plusieurs fonctions permettant de créer des sidebars :</p>
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <code class="language-php">register_sidebar()</code>
+                    <code class="language-php">register_sidebars()</code>
+                    <code class="language-php">unregister_sidebar()</code>
+                </td>
+                <td>Enregistré un nouvel emplacement pour positionner des widgets (visible côté admin).</td>
+            </tr>
+            <tr>
+                <td>
+                    <code class="language-php">is_active_sidebar()</code>
+                </td>
+                <td>Vérifier si une sidebar est utilisée (contient des widgets).</td>
+            </tr>
+            <tr>
+                <td>
+                    <code class="language-php">dynamic_sidebar()</code>
+                </td>
+                <td>Afficher les widgets d'une sidebar (côté front).</td>
+            </tr>
+            </tbody>
+        </table>
+        <footer>
+            <a href="https://developer.wordpress.org/themes/functionality/sidebars/" class="info" target="_blank">Documentation Sidebars</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Créer des sidebars - La fonction register_sidebar</h3>
+        <p>La fonction <code class="language-php">register_sidebar()</code> prend un paramètre. Ce paramètre doit être un tableau associatif contenant les paramètres de la sidebar :</p>
+        <pre><code class="language-php">add_action('widgets_init', 'my_register_sidebars');
+function my_register_sidebars() {
+    register_sidebar([
+            'id'            => 'footer-sidebar',
+            'name'          => 'Zone de widgets du footer',
+            'before_widget' => '&lt;div id="%1$s" class="widget %2$s"&gt;',
+            'after_widget'  => '&lt;/div&gt;'
+    ]);
+}</code></pre>
+        <p>Ce code peut être ajouté au fichier <code>functions.php</code> et doit être appelé via le hook <code>widgets_init</code>.</p>
+        <p>Consultez la <a href="https://developer.wordpress.org/reference/functions/register_sidebar/" target="_blank">documentation</a> pour plus d'informations sur l'utilisation de la fonction <code class="language-php">register_sidebar()</code>.</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/register_sidebar/" class="info" target="_blank">Documentation de la fonction register_sidebar()</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Créer un menu - La fonction dynamic_sidebar</h3>
+        <p>La fonction <code class="language-php">dynamic_sidebar()</code> prend un paramètre. Ce paramètre doit correspondre à l'index, le nom ou l'identifiant de la sidebar à afficher :</p>
+        <pre><code class="language-php">dynamic_sidebar('footer-sidebar'); // Doit correspondre au paramètre 'id' de la fonction register_sidebar()</code></pre>
+        <p>Ce code peut être ajouté dans un fichier de template comme par exemple le fichier <code>footer.php</code>.</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/dynamic_sidebar/" class="info" target="_blank">Documentation de la fonction dynamic_sidebar()</a>
+        </footer>
+    </section>
+
+    <section id="custom-post-type">
+        <h3>Types de contenu</h3>
+        <p>Par défaut, WordPress dispose de 5 types de contenus différents :</p>
+        <ul>
+            <li>Les articles (Post Type: ‘post’)</li>
+            <li>Les pages (Post Type: ‘page’)</li>
+            <li>Les pièces jointes (Post Type: ‘attachment’)</li>
+            <li>Les révisions (Post Type: ‘revision’)</li>
+            <li>Les menus de navigation (Post Type: ‘nav_menu_item’)</li>
+        </ul>
+        <p>En fonction du type de contenu à afficher, des fichiers de template différents seront appelés.</p>
+        <footer>
+            <a href="https://developer.wordpress.org/themes/basics/post-types/" class="info" target="_blank">Documentation sur les types de contenus de WordPress</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Types de contenu - La fonction register_post_type</h3>
+        <p>La fonction <code class="language-php">register_post_type()</code> permet d'ajouter un nouveau type de contenu (Custom Post Type / CPT) dans WordPress.</p>
+        <p>Le premier paramètre de cette fonction est un identifiant unique et le second un tableau associatifs contenant les paramètres du CPT :</p>
+        <pre><code class="language-php" style="font-size: 0.8em;">add_action('init', 'employees_cpt_init');
+function employees_cpt_init() {
+    register_post_type('employee', [
+        'labels' => ['name' => 'Employés', 'singular_name' => 'Employé', 'menu_name' => 'Employés'],
+        'public' => true,
+        'has_archive' => true,
+        'rewrite' => ['slug' => 'employee'],
+        'supports' => ['title', 'editor', 'thumbnail', 'excerpt'],
+    ]);
+}</code></pre>
+        <p>Ce code peut être ajouté au fichier <code>functions.php</code> et doit être appelé via le hook <code>init</code>.</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/register_post_type" class="info" target="_blank">Documentation de la fonction register_post_type</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Types de contenu - La fonction flush_rewrite_rules</h3>
+        <p>Lorsque vous ajouter un nouveau CPT dans le code source d'un thème, il faut également penser à actualiser les permaliens.</p>
+        <p>Pour cela, vous pouvez aller dans la partie administration de WordPress puis dans <code>Réglages > Permaliens > Enregistrer</code> ou bien via l'interface en ligne de commande :</p>
+        <pre><code class="language-shell">wp rewrite flush</code></pre>
+        <p>Il est également possible d'utiliser la fonction <code class="language-php">flush_rewrite_rules()</code> pour déclencher cette opération lors de l'activation du thème :</p>
+        <pre><code class="language-php">add_action('after_switch_theme', 'my_rewrite_flush');
+function my_rewrite_flush() {
+    employees_cpt_init(); // Appeler la fonction qui permet d'ajouter un CPT
+    flush_rewrite_rules(); // Actualiser les permaliens
+}</code></pre>
+    </section>
+
+    <section id="wp-query">
+        <h3>WP Query</h3>
+        <p>La classe <code class="language-php">WP_Query</code> permet de modifier les <strong>données</strong> qui seront utilisées à l'intérieur de la <strong>boucle de WordPress</strong>.</p>
+        <p>Il s'agit d'une classe permettant de simplifier l'écriture de requêtes SQL de type <code>SELECT</code>.</p>
+        <p>Cela peut permettre par exemple d'afficher <strong>plusieurs types de contenus</strong> différents sur une même page (souvent utile sur la page d'accueil d'un site web).</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/classes/wp_query/" class="info" target="_blank">Documentation WP_Query</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>WP Query</h3>
+        <p>Récupérer l'ensemble des employés :</p>
+        <pre class="line-numbers" data-line="2, 4, 5, 8"><code class="language-php"><?php
+$the_query = new WP_Query(['post_type' => 'employee']); ?>
+
+<?php if ($the_query->have_posts()) : ?>
+    <?php while ($the_query->have_posts()) : $the_query->the_post(); ?>
+        &lt;h2&gt;<?php the_title(); ?>&lt;/h2&gt;
+    <?php endwhile; ?>
+    <?php wp_reset_postdata(); ?>
+<?php else : ?>
+    &lt;p&gt;Aucun employés&lt;/p&gt;
+<?php endif; ?></code></pre>
+        <p>Remarquez l'utilisation d'une variable <code class="language-php">$the_query</code> utilisée pour réaliser la boucle ainsi que la fonction <code class="language-php">wp_reset_postdata()</code> qui permet de restorer la variable <code class="language-php">$post</code> avec les données de la requête principale.</p>
+    </section>
+
+    <section>
+        <h3>WP Query</h3>
+        <p>La classe <code class="language-php">WP_Query</code> permet de réaliser des requêtes relativement complexes avec la possiblité de filtrer par <strong>type de contenu</strong>, par <strong>taxonomie</strong> ou encore par un <strong>champ personnalisé</strong>.</p>
+        <p>Il est également possible de définir le <strong>tri</strong> qui sera effectué lors de la récupération des données :</p>
+        <pre><code class="language-php">$the_query = new WP_Query([
+    'post_type' => 'employee', // Récupérer les employés (Custom Post Type)
+    'tax_query' => [
+        [
+            'taxonomy'  => 'job',
+            'field'     => 'slug',
+            'terms'     => 'dev-fullstack' // Uniquement les employés liés au job Dev Fullstack
+        ],
+    ],
+    'orderby'   => 'title', // Triés par titre ascendant
+    'order'     => 'ASC'
+]);</code></pre>
+    </section>
+
+    <section id="taxonomy">
+        <h3>Taxonomies</h3>
+        <p>Définition d'une taxonomie :</p>
+        <blockquote>
+            <p>En informatique, le terme taxonomie (taxonomy en anglais) désigne une <strong>méthode de classification</strong> des informations dans une architecture structurée de manière évolutive. Le terme est couramment employé pour des systèmes de gestion de contenu (CMS).</p>
+            <cite>Wikipedia</cite>
+        </blockquote>
+        <p>Exemples : Couleur d'un produit, Taille d'un vêtement, Métier d'un employé...</p>
+    </section>
+
+    <section>
+        <h3>Taxonomies - La fonction register_taxonomy</h3>
+        <p>La fonction <code class="language-php">register_taxonomy()</code> permet d'ajouter une nouvelle taxonomie et de l'associer à un ou plusieurs types de contenus.</p>
+        <p>Le premier paramètre de cette fonction est un identifiant unique, le second et un tableau contenant la liste des types de contenus à associer à la taxonomie et le dernier paramètre est un tableau associatif contenant les paramètres de la taxonomie :</p>
+        <pre><code class="language-php" style="font-size: 0.8em;">add_action('init', 'job_taxonomy_init');
+function job_taxonomy_init() {
+    register_taxonomy('job', ['employee'], [
+        'label' => 'Métier',
+        'rewrite' => ['slug' => 'jobs'],
+        'hierarchical' => true
+    ]);
+}</code></pre>
+        <p>Ce code peut être ajouté au fichier <code>functions.php</code> et doit être appelé via le hook <code>init</code>.</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/register_taxonomy" class="info" target="_blank">Documentation de la fonction register_taxonomy</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Taxonomies - La fonction register_taxonomy</h3>
+        <p>Le second paramètre de la fonction <code class="language-php">register_taxonomy()</code> doit impérativement contenir un ou plusieurs identifiants correspondant à un type de contenu existant :</p>
+        <pre><code class="language-php" style="font-size: 0.8em;">register_post_type('employee', [...]);
+register_taxonomy('job', ['employee'], [...]);</code></pre>
+    </section>
+
+    <section>
+        <h3>Taxonomies - Afficher les taxonomies</h3>
+        <p>Pour afficher la liste des éléments d'une taxonomie liée à un contenu, vous pouvez utiliser l'une des deux fonctions suivantes :</p>
+        <ol>
+            <li><code class="language-php">get_the_term_list()</code> : Cette fonction retourne le code HTML nécessaire pour afficher la liste des valeurs.</li>
+            <li><code class="language-php">get_the_terms()</code> : Cette fonction retourne un tableau PHP contenant une liste d'objet de type <code class="language-php">WP_Term</code>.</li>
+        </ol>
+        <p>Pour récupére l'ensemble des éléments d'une taxonomie, vous pouvez utiliser la fonction <code class="language-php">get_terms()</code>.</p>
+    </section>
+
+    <section id="custom-fields">
+        <h3>Champs personnalisés</h3>
+        <p>Les champs personnalisés sont disponibles <strong>nativement</strong> dans WordPress.</p>
+        <p>Malheureusement, les fonctionnalités sont très limitées et il n'est possible de créer que des champs de type <code>textarea</code>.</p>
+        <p>Cependant, il existe plusieurs plugins proposant des champs personnalisés bien plus avancés 🚀.</p>
+    </section>
+
+    <section>
+        <h3>Champs personnalisés - ACF</h3>
+        <p>Advanced Custom Field est un plugin permettant d'ajouter des champs personnalisés de différents types dans l'interface d'administration.</p>
+        <div class="container">
+            <div class="col">
+                <img src="assets/images/acf.jpg" alt="ACF">
+            </div>
+            <div class="col">
+                <ul>
+                    <li>Texte</li>
+                    <li>Liste déroulante</li>
+                    <li>Cases à cocher</li>
+                    <li>Image</li>
+                    <li>Upload</li>
+                    <li>Date picker</li>
+                    <li>Relation</li>
+                    <li>Répéteur</li>
+                    <li>...</li>
+                </ul>
+            </div>
+        </div>
+        <footer>
+            <a href="https://www.advancedcustomfields.com/resources/#field-types" class="info" target="_blank">Liste des types de champs</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Champs personnalisés - ACF</h3>
+        <p>Ces champs personnalisés peuvent être ajoutés sur n'importe quel <a href="https://www.advancedcustomfields.com/resources/adding-fields-posts/" target="_blank">type de contenu</a> (articles, pages, CPT...), sur des <a href="https://www.advancedcustomfields.com/resources/adding-fields-taxonomy-term/" target="_blank">taxonomies</a>, des <a href="https://www.advancedcustomfields.com/resources/adding-fields-menus/" target="_blank">menus</a> et même dans des <a href="https://www.advancedcustomfields.com/blog/acf-5-8-introducing-acf-blocks-for-gutenberg/" target="_blank">blocs Gutenberg</a> !</p>
+        <p>Cela permet d'étendre les fonctionnalités de WordPress et de pouvoir <strong>gérer n'importe quel type de données</strong> de manière très précise.</p>
+        <p>Par exemple, pour gérer une liste d'employés sur un site vitrine d'une entreprise, il sera possible de...</p>
+        <ol>
+            <li>Créer un nouveau CPT pour gérer les employés</li>
+            <li>Créer une nouvelle taxonomie pour associer les employés à un métier</li>
+            <li>Créer des champs personnalisés pour saisir le nom et le prénom d'un employé</li>
+        </ol>
+    </section>
+
+    <section>
+        <h3>Champs personnalisés - Créer un groupe de champs</h3>
+        <p>Il est possible de créer un groupe de champs de deux manières différentes :</p>
+        <ol>
+            <li>Via l'interface graphique (informations en base de données)</li>
+            <li>Via le code PHP (informations dans le code source)</li>
+            <li>Via un fichier JSON (informations dans le code source)</li>
+        </ol>
+        <p>La première solution est la plus simple mais présente malheureusement des inconvénients :</p>
+        <ul>
+            <li>Les informations ne peuvent pas être <strong>versionnées</strong></li>
+            <li>Il n'est pas simple de <strong>réutiliser les mêmes champs</strong> d'un projet à un autre</li>
+            <li>Il est nécessaire de <strong>mettre à jour la base de données</strong> pour mettre à jour en prod</li>
+            <li>La base de données doit être partagée <strong>entre les développeurs</strong></li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Champs personnalisés - Créer un groupe de champs</h3>
+        <p>Nous allons donc utiliser la seconde approche pour créer un groupe de champs personnalisés :</p>
+        <pre><code class="language-php" style="font-size: 0.8em;">function employee_add_local_field_groups() {
+    if(function_exists('acf_add_local_field_group')) {
+        acf_add_local_field_group([
+            'key' => 'group_employee',
+            'title' => 'Employé',
+            'fields' => [
+                ['key' => 'field_firstname', 'label' => 'Prénom', 'name' => 'firstname', 'type' => 'text'],
+                ['key' => 'field_lasstname', 'label' => 'Nom', 'name' => 'lastname', 'type' => 'text']
+            ],
+            'location': [
+                [
+                    ['param' => 'post_type', 'operator' => '==', 'value' => 'employee']
+                ]
+            ]
+        ]);
+    }
+}
+add_action('acf/init', 'employee_add_local_field_groups');</code></pre>
+        <footer>
+            <a href="https://www.advancedcustomfields.com/resources/register-fields-via-php/" class="info" target="_blank">Documentation Register fields via PHP</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Champs personnalisés - Afficher des champs</h3>
+        <p>Pour afficher un champ personnalisé ACF, il suffit d'utiliser la fonction <code class="language-php">the_field()</code> à l'intérieur de la boucle WordPress :</p>
+        <pre><code class="language-php">the_field('field_firstname');</code></pre>
+        <p>Ou bien en dehors de la boucle en précisant l'id du contenu :</p>
+        <pre><code class="language-php">the_field('field_firstname', 123);</code></pre>
+        <footer>
+            <a href="https://www.advancedcustomfields.com/resources/the_field/" class="info" target="_blank">Documentation the_field</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Champs personnalisés - Solution Open Source</h3>
+        <p>Il existe d'autres librairies permettant de gérer des champs personnalisés et notamment la librairie Open Source Carbon Fields :</p>
+        <a href="https://carbonfields.net/" target="_blank">
+            <img src="assets/images/carbon-fields.png" alt="Carbon Fields">
+        </a>
+        <p>A la différence d'ACF, il ne s'agit pas d'un plugin mais d'un package installable via composer et il ne dispose pas d'une interface graphique pour créer de nouveaux champs.</p>
+    </section>
+
+</section>

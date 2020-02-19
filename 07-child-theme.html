@@ -1,0 +1,95 @@
+<section id="child-theme">
+
+    <section>
+        <h2>Créer un thème enfant</h2>
+    </section>
+
+    <section>
+        <h3>Pourquoi un thème enfant ?</h3>
+        <p>Il est possible de modifier directement un thème WordPress en éditant les fichiers du thème.</p>
+        <p>Cependant, si vous effectuez une mise à jour du thème <strong>l'ensemble des modifications seront écrasées</strong> !</p>
+        <footer>
+            <a href="#" class="danger">Ne jamais modifier directement les fichier d'un thème !</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Création d'un thème enfant</h3>
+        <p>Dans un premier temps, nous allons créer un nouveau dossier contenu les fichiers de notre thème enfant.</p>
+        <p>Ce dossier doit être un sous-dossier de <code class="language-shell">wp-content/themes</code> et il est recommandé de le nommé comme le dossier du thème parent en ajoutant <code class="language-shell">-child</code> à la fin.</p>
+        <p>Par exemple, pour créer un thème enfant du thème <code class="language-shell">twentytwenty</code>, il faut créer le dossier <code class="language-shell">wp-content/themes/twentytwenty-child</code></p>
+    </section>
+
+    <section>
+        <h3>Le fichier style.css</h3>
+        <p>Il faut ensuite créer un fichier <code>style.css</code>.</p>
+        <p>Ce fichier devra impérativement contenir une zone de commentaire au début du code avec un contenu similaire à celui-ci :</p>
+        <pre data-line="2,7" class="line-numbers"><code class="language-css">/*
+ Theme Name:   Twenty Fifteen Child
+ Theme URI:    http://example.com/twenty-fifteen-child/
+ Description:  Twenty Fifteen Child Theme
+ Author:       John Doe
+ Author URI:   http://example.com
+ Template:     twentyfifteen
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  twentyfifteenchild
+*/</code></pre>
+    </section>
+
+    <section>
+        <h3>Charger les feuilles de styles</h3>
+        <p>La dernière étape consiste à charger la feuille de style du thème parent ainsi que celle du thème enfant.</p>
+        <p>Pour cela, il faut créer un fichier <code>functions.php</code> et utiliser la fonction <code class="language-php">wp_enqueue_style()</code> :</p>
+        <pre><code class="language-php"><?php
+add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
+function my_theme_enqueue_styles() {
+    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css' );
+    wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css',
+        ['parent-style'],
+        wp_get_theme()->get('Version')
+    );
+}</code></pre>
+    </section>
+
+    <section>
+        <h3>Charger les feuilles de styles</h3>
+        <p>Le code précédent comprend beaucoup de nouvelles fonctions propres à WordPress.</p>
+        <p>Nous allons donc analyser ce code :</p>
+        <pre><code class="language-php"><?php
+add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
+function my_theme_enqueue_styles() { }</code></pre>
+        <p>La fonction <code class="language-php">add_action()</code> permet de lier une fonction à une action de WordPress. Cela permet de s'assurer que notre code sera exécuté <strong>au bon moment</strong>.</p>
+        <p>Dans cette fonction, le premier paramètre indique le <strong>hook</strong> auquel nous souhaitons lier notre fonction et le second paramètre est le <strong>nom de la fonction</strong> à exécuter.</p>
+    </section>
+
+    <section>
+        <h3>Charger les feuilles de styles</h3>
+        <p>La fonction <code class="language-php">wp_enqueue_style()</code> permet de charger une feuille de style CSS.</p>
+        <pre><code class="language-php">wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css' );</code></pre>
+        <p>Le premier paramètre correspond à l'identifiant de notre feuille de style (il doit être unique) et le second au chemin vers la feuille de style à charger.</p>
+        <p>La fonction <code class="language-php">get_template_directory_uri()</code> permet de récupérer le chemin vers le dossier du thème parent.</p>
+    </section>
+
+    <section>
+        <h3>Charger les feuilles de styles</h3>
+        <p>La fonction <code class="language-php">wp_enqueue_style()</code> est également utilisée pour charger feuille de style CSS du thème enfant.</p>
+        <pre><code class="language-php">wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css',
+    ['parent-style'],
+    wp_get_theme()->get('Version')
+);</code></pre>
+        <p>Ici, le troisième paramètre permet de définir les autres feuilles de styles à charger avant (dépendances) et le dernier paramètre permet de donner une version à la feuille de style (ici, on récupère le numéro de version du thème défini dans le commentaire de la feuille de style CSS).</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/wp_enqueue_style/#parameters" class="info" style="font-size: 0.8em;" target="_blank">Le numéro de version permet de forcer le téléchargement du fichier CSS</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Ecraser un fichier de template</h3>
+        <p>Il est possible d'écraser / surcharger un fichier de template du thème parent.</p>
+        <p>Pour cela, il suffit de copier/coller le fichier en question du thème parent vers le thème enfant en faisant attention à respecter l'arborescence des fichiers.</p>
+    </section>
+
+</section>

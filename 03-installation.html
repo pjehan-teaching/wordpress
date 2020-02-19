@@ -1,0 +1,53 @@
+<section id="installation">
+
+    <section>
+        <h2>Installation</h2>
+    </section>
+
+    <section>
+        <h3>wordpress.com</h3>
+        <p>Wordpress.com permet de créer rapidement un site ou un blog. L’hébergement est inclus et certaines fonctionnalités supplémentaires sont disponibles.</p>
+        <p>Il n’est cependant pas possible d’installer d’extension ou de modifier les thèmes disponibles (une option payante permet cependant d’activer l’éditeur CSS).</p>
+    </section>
+
+    <section>
+        <h3>Installation de Wordpress</h3>
+        <ol>
+            <li>Télécharger le fichier zip contenant les fichiers de Wordpress.</li>
+            <li>Créer une nouvelle base de données pour stocker les données du site.</li>
+            <li>Dézipper le fichier de Wordpress dans le répertoire du serveur web.</li>
+            <li>Aller dans le dossier depuis un navigateur web.</li>
+            <li>Suivre les instructions d’installation.</li>
+        </ol>
+    </section>
+
+    <section>
+        <h3>Arborescence des fichiers</h3>
+        <p>Fichiers de configuration :</p>
+        <ul>
+            <li>wp-config.php</li>
+            <li>wp-settings.php</li>
+        </ul>
+        <p>Répertoires :</p>
+        <ul>
+            <li>/wp-admin : Contient les fichiers du coeur de Wordpress</li>
+            <li>/wp-include : Contient les fichiers coeur de Wordpress</li>
+            <li>
+                <strong>/wp-content</strong>
+                <ul>
+                    <li>/languages : Contient les fichiers permettant la traduction des modules ou des themes</li>
+                    <li>/plugins : Contient les plugins (extensions) installés</li>
+                    <li>/themes : Contient les themes installés</li>
+                    <li>/uploads : Permet de stocker les fichiers uploadés (les images par exemple)</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Le fichier wp-config</h3>
+        <p>Le fichier wp-config.php contient les informations de connexion à la base de données. Lorsque l’on <strong>upload un site</strong> Wordpress sur un serveur, il ne faut pas oublier de <strong>modifier ces informations</strong> !</p>
+        <p>La valeur <strong>WP_DEBUG</strong> permet d’afficher les erreurs PHP et <strong>WPLANG</strong> permet de définir la langue de Wordpress.</p>
+    </section>
+
+</section>
