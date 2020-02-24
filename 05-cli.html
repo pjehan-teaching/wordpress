@@ -17,6 +17,25 @@ sudo mv wp-cli.phar /usr/local/bin/wp</code></pre>
     </section>
 
     <section>
+        <h3>MAC OS</h3>
+        <pre><code class="language-shell">ln -s /Applications/MAMP/tmp/mysql/mysql.sock /tmp/mysql.sock
+touch ~/.bash_profile
+echo "export PATH=$PATH:/Applications/MAMP/Library/bin/" >> ~/.bash_profile
+source ~/.bash_profile</code></pre>
+    </section>
+
+    <section>
+        <h3>Windows</h3>
+        <ol>
+            <li>Ajouter PHP dans les variables d'environnement (PATH)</li>
+            <li>Utiliser Git Bash en tant qu'administrateur</li>
+        </ol>
+        <pre><code class="language-shell">curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+mv wp-cli.phar /usr/bin/wp</code></pre>
+    </section>
+
+    <section>
         <h3>Téléchargement et installation de WordPress</h3>
         <pre><code class="language-shell">wp core download --locale=fr_FR
 wp config create --dbname=mydb --dbuser=root --dbpass=root
