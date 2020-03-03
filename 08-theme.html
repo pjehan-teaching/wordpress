@@ -2,20 +2,17 @@
 
     <section>
         <h2>Créer un thème "from scratch"</h2>
-    </section>
-
-    <section>
-        <h3>Sommaire</h3>
-        <ul>
+        <ol>
             <li><a href="#create-theme">Créer un thème</a></li>
             <li><a href="#layout">Layout</a></li>
             <li><a href="#menus">Menus</a></li>
             <li><a href="#sidebars">Sidebars (Widgets)</a></li>
+            <li><a href="#page-templates">Templates de page</a></li>
             <li><a href="#custom-post-type">Custom Post Type</a></li>
             <li><a href="#wp-query">WP Query</a></li>
             <li><a href="#taxonomy">Taxonomie</a></li>
             <li><a href="#custom-fields">Custom Fields (ACF)</a></li>
-        </ul>
+        </ol>
     </section>
 
     <section id="create-theme">
@@ -251,13 +248,31 @@ function my_register_sidebars() {
     </section>
 
     <section>
-        <h3>Créer un menu - La fonction dynamic_sidebar</h3>
+        <h3>Créer des sidebars - La fonction dynamic_sidebar</h3>
         <p>La fonction <code class="language-php">dynamic_sidebar()</code> prend un paramètre. Ce paramètre doit correspondre à l'index, le nom ou l'identifiant de la sidebar à afficher :</p>
         <pre><code class="language-php">dynamic_sidebar('footer-sidebar'); // Doit correspondre au paramètre 'id' de la fonction register_sidebar()</code></pre>
         <p>Ce code peut être ajouté dans un fichier de template comme par exemple le fichier <code>footer.php</code>.</p>
         <footer>
             <a href="https://developer.wordpress.org/reference/functions/dynamic_sidebar/" class="info" target="_blank">Documentation de la fonction dynamic_sidebar()</a>
         </footer>
+    </section>
+
+    <section id="page-templates">
+        <h3>Templates de page</h3>
+        <p>Les <strong>templates de page</strong> permettent d'associer une ou plusieurs page à un template PHP.</p>
+        <p>Ils peuvent être utilisés pour créer une mise en page avec par exemple une <strong>sidebar</strong> ou encore pour personnaliser l'affichage d'une <strong>page précise</strong> (page contact par exemple).</p>
+        <footer>
+            <a href="https://developer.wordpress.org/themes/template-files-section/page-template-files/" class="info" target="_blank">Documentation Page Template</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Templates de page</h3>
+        <p>Pour créer un template de page, il faut créer un fichier PHP dans le thème (par exemple <code>template-contact.php</code>).</p>
+        <p>Ensuite, il faut ajouter un commentaire au début du fichier :</p>
+        <pre><code class="language-php">&lt;?php
+// Template Name: Contact</code></pre>
+        <p>Vous pourrez ensuite sélectionner le template de page lors de la création / modification d'une page.</p>
     </section>
 
     <section id="custom-post-type">
@@ -393,7 +408,7 @@ register_taxonomy('job', ['employee'], [...]);</code></pre>
         <h3>Taxonomies - Afficher les taxonomies</h3>
         <p>Pour afficher la liste des éléments d'une taxonomie liée à un contenu, vous pouvez utiliser l'une des deux fonctions suivantes :</p>
         <ol>
-            <li><code class="language-php">get_the_term_list()</code> : Cette fonction retourne le code HTML nécessaire pour afficher la liste des valeurs.</li>
+            <li><code class="language-php">the_terms()</code> : Cette fonction affiche le code HTML nécessaire pour afficher la liste des valeurs.</li>
             <li><code class="language-php">get_the_terms()</code> : Cette fonction retourne un tableau PHP contenant une liste d'objet de type <code class="language-php">WP_Term</code>.</li>
         </ol>
         <p>Pour récupére l'ensemble des éléments d'une taxonomie, vous pouvez utiliser la fonction <code class="language-php">get_terms()</code>.</p>

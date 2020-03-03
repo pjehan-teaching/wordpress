@@ -7,6 +7,18 @@ document.getElementById('revealexpress').addEventListener('loaded', function(eve
 
   Prism.highlightAll();
 
+  document.querySelectorAll('.link-localhost').forEach(function(a) {
+    var localhost = navigator.platform.startsWith('Mac') ? 'http://localhost:8888' : 'http://localhost';
+    a.href = localhost;
+    a.innerHTML = localhost;
+  });
+
+  document.querySelectorAll('.link-phpmyadmin').forEach(function(a) {
+    var localhost = navigator.platform.startsWith('Mac') ? 'http://localhost:8888/phpmyadmin' : 'http://localhost/phpmyadmin';
+    a.href = localhost;
+    a.innerHTML = localhost;
+  });
+
   Chart.defaults.global.defaultFontSize = 22;
 
   new Chart(document.getElementById('chart-cms').getContext('2d'), {

@@ -11,6 +11,10 @@
         <pre><code class="language-shell">curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 sudo mv wp-cli.phar /usr/local/bin/wp</code></pre>
+        <p>Pour Windows, ouvrez le Git Bash en Administrateur puis :</p>
+        <pre><code class="language-shell">curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+mv wp-cli.phar /usr/bin/wp</code></pre>
         <footer>
             <a href="https://developer.wordpress.org/cli/commands/" class="info" target="_blank">Liste des commandes</a>
         </footer>
@@ -22,17 +26,6 @@ sudo mv wp-cli.phar /usr/local/bin/wp</code></pre>
 touch ~/.bash_profile
 echo "export PATH=$PATH:/Applications/MAMP/Library/bin/" >> ~/.bash_profile
 source ~/.bash_profile</code></pre>
-    </section>
-
-    <section>
-        <h3>Windows</h3>
-        <ol>
-            <li>Ajouter PHP dans les variables d'environnement (PATH)</li>
-            <li>Utiliser Git Bash en tant qu'administrateur</li>
-        </ol>
-        <pre><code class="language-shell">curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-chmod +x wp-cli.phar
-mv wp-cli.phar /usr/bin/wp</code></pre>
     </section>
 
     <section>
