@@ -1,0 +1,58 @@
+<section id="starter-theme">
+
+    <section>
+        <h2>Utiliser un Starter Theme</h2>
+    </section>
+
+    <section>
+        <h3>Introduction</h3>
+        <p>Un starter theme offre généralement les avantages suivants :</p>
+        <ul>
+            <li>Une structure de fichiers prédéfinie</li>
+            <li>Des fichiers indispensables déjà présent (index.php, functions.php...)</li>
+        </ul>
+        <p>Et peut éventuellement également proposer :</p>
+        <ul>
+            <li>Une installation de WebPack pour la compilations des assets</li>
+            <li>Un moteur de template (Twig, Blade...)</li>
+            <li>Un gestion des dépendances front (NPM) et back (composer)</li>
+            <li>Un système de live reloading</li>
+            <li>...</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Sage</h3>
+        <div class="container">
+            <div class="col" style="flex: 2;">
+                <p><a href="https://roots.io/sage" target="_blank">Sage</a> est un starter theme développer par une équipe de développeur. Il s'agit d'un projet Open Source.</p>
+                <p>Il existe également un boilerplate <a href="https://roots.io/bedrock" target="_blank">Bedrock</a> développé par la même équipe.</p>
+            </div>
+            <div class="col">
+                <img src="assets/images/roots.svg" alt="Sage">
+            </div>
+        </div>
+        <footer>
+            <a href="https://roots.io/sage-vs-underscores" class="info" target="_blank">Sage VS Underscores</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Création d'un nouveau thème</h3>
+        <p>Pour créer un nouveau thème avec Sage, nous pouvons exécuter la suite d'instructions suivante :</p>
+        <pre><code class="language-shell">mkdir wordpress
+wp core download --locale=fr_FR
+wp config create --dbname=dbname --dbuser=root --dbpass=root --locale=fr_FR
+wp db create
+wp core install --url=localhost:8080 --title=Example --admin_user=admin --admin_password=admin --admin_email=admin@example.com
+cd wp-content/themes
+composer create-project roots/sage your-theme-name
+cd your-theme-name
+composer install
+npm install
+wp server
+npm start</code></pre>
+        <p>Puis dans l'administration du site, activer le thème nouvellement installé.</p>
+    </section>
+
+</section>
