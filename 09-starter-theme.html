@@ -17,6 +17,7 @@
             <li>Un moteur de template (Twig, Blade...)</li>
             <li>Un gestion des dépendances front (NPM) et back (composer)</li>
             <li>Un système de live reloading</li>
+            <li>Un linter pour la validation du code</li>
             <li>...</li>
         </ul>
     </section>
@@ -41,6 +42,7 @@
         <h3>Création d'un nouveau thème</h3>
         <p>Pour créer un nouveau thème avec Sage, nous pouvons exécuter la suite d'instructions suivante :</p>
         <pre><code class="language-shell">mkdir wordpress
+cd wordpress
 wp core download --locale=fr_FR
 wp config create --dbname=dbname --dbuser=root --dbpass=root --locale=fr_FR
 wp db create
@@ -49,10 +51,69 @@ cd wp-content/themes
 composer create-project roots/sage your-theme-name
 cd your-theme-name
 composer install
-npm install
-wp server
+npm install</code></pre>
+    </section>
+
+    <section>
+        <h3>Création d'un nouveau thème</h3>
+        <p>Le fichier <code>resources/assets/config.json</code> contient la configuration principale permettant de gérer la compilation des assets, l'ouverture automatique du site dans le navigateur ou encore le système de Live Reloading.</p>
+        <p>Créer un nouveau fichier <code>resources/assets/config-local.json</code> et ajouter insérer ces lignes :</p>
+        <pre><code class="language-json">{
+  "publicPath": "/wp-content/themes/your-theme-name",
+  "devUrl": "http://localhost:8080"
+}</code></pre>
+        <pre><code class="language-shell">wp server
 npm start</code></pre>
         <p>Puis dans l'administration du site, activer le thème nouvellement installé.</p>
+    </section>
+
+    <section>
+        <h3>Structure</h3>
+        <pre>
+themes/your-theme-name/   + → Root of your Sage based theme
+├── app/                  + → Theme PHP
+│   ├── controllers/      + → Controller files
+│   ├── admin.php         # → Theme customizer setup
+│   ├── filters.php       # → Theme filters (add_filter() functions and Blade system)
+│   ├── helpers.php       # → Helper functions
+│   └── setup.php         + → Theme setup (add_action() functions)
+├── config/               - → Theme configuration
+├── composer.json         # → Autoloading for `app/` files
+├── composer.lock         - → Composer lock file (never edit)
+├── dist/                 - → Built theme assets (never edit)
+├── node_modules/         - → Node.js packages (never edit)
+├── package.json          # → Node.js dependencies and scripts
+├── resources/            # → Theme assets and templates
+│   ├── assets/           # → Front-end assets
+│   │   ├── config.json   # → Settings for compiled assets (config-local.json instead)
+│   │   ├── build/        - → Webpack and ESLint config
+│   │   ├── fonts/        + → Theme fonts
+│   │   ├── images/       + → Theme images
+│   │   ├── scripts/      + → Theme JS
+│   │   └── styles/       + → Theme stylesheets
+│   ├── functions.php     - → Composer autoloader, theme includes
+│   ├── index.php         - → Never manually edit
+│   ├── screenshot.png    + → Theme screenshot for WP admin
+│   ├── style.css         + → Theme meta information
+│   └── views/            + → Theme templates
+│       ├── layouts/      + → Base templates
+│       └── partials/     + → Partial templates
+└── vendor/               - → Composer packages (never edit)
+        </pre>
+    </section>
+
+    <section>
+        <h3>Controllers</h3>
+        <p>Le nom des controllers doit suivre la hiérarchie de WordPress (exemple : Home.php, Single.php, SingleMovie.php).</p>
+        <p>Le comportement diffère selon la visibilité de la méthode :</p>
+        <ul>
+            <li><code class="language-php">public function userInfo()</code> : La méthode devient une variable dans Blade et est accessible de cette façon : <code class="language-php">$user_info</code></li>
+            <li><code class="language-php">public static function getLastMovies()</code> : La méthode est accessible depuis un template Blade et peut être appelée de cette façon : <code class="language-php">SingleMovie::getLastMovies()</code></li>
+        </ul>
+        <p>Si la méthode a une visibilité <code class="language-php">protected</code> ou <code class="language-php">private</code> elle n'est alors accessible que dans la classe.</p>
+        <footer>
+            <a href="https://github.com/soberwp/controller" class="info" target="_blank">Documentation</a>
+        </footer>
     </section>
 
 </section>
