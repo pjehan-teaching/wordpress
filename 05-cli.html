@@ -31,7 +31,7 @@ source ~/.bash_profile</code></pre>
     <section>
         <h3>Téléchargement et installation de WordPress</h3>
         <pre><code class="language-shell">wp core download --locale=fr_FR
-wp config create --dbname=mydb --dbuser=root --dbpass=root
+wp config create --dbhost=localhost:3306 --dbname=mydb --dbuser=root --dbpass=root
 wp db create
 wp core install --url=localhost --title="Mon blog" --admin_user=admin --admin_password=admin --admin_email=admin@gmail.com</code></pre>
     </section>

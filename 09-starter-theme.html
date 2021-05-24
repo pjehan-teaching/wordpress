@@ -44,7 +44,7 @@
         <pre><code class="language-shell">mkdir wordpress
 cd wordpress
 wp core download --locale=fr_FR
-wp config create --dbname=dbname --dbuser=root --dbpass=root --locale=fr_FR
+wp config create --dbhost=localhost:3306 --dbname=dbname --dbuser=root --dbpass=root --locale=fr_FR
 wp db create
 wp core install --url=localhost:8080 --title=Example --admin_user=admin --admin_password=admin --admin_email=admin@example.com
 cd wp-content/themes
