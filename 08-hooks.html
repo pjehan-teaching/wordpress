@@ -1,0 +1,107 @@
+<section id="hooks">
+
+    <section>
+        <h2>Les hooks</h2>
+    </section>
+
+    <section>
+        <h3>Qu'est-ce qu'un hook ?</h3>
+        <p>Un hook est un système permettant <strong>d'étendre / modifier le comportement</strong> d'un algorithme sans modifier directement le code source.</p>
+        <p>Dans WordPress, cela permet d'ajuster le comportement d'un thème, d'un plugin ou du coeur de WordPress <strong>sans aller directement dans les fichiers sources</strong>.</p>
+        <p>Ainsi, il sera possible par la suite d'effectuer des mises à jour sans risquer de perdre du "custom code".</p>
+        <footer>
+            <a href="https://en.wikipedia.org/wiki/Template_method_pattern" target="_blank" class="info">Un hook est similaire au design pattern <strong>Template Method</strong></a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Qu'est-ce qu'un hook ?</h3>
+        <img src="assets/images/hooks.png" alt="Hooks">
+    </section>
+
+    <section>
+        <h3>add_filter / apply_filters</h3>
+        <p>La fonction <code class="language-php">add_filter()</code> permet de déclarer un nouveau hook qui pourra ensuite être utilisé via la fonction <code class="language-php">apply_filters()</code>.</p>
+        <pre><code class="language-php">function default_slugify(string $url): string {
+    return str_replace(' ', '-', $url); // Remplace les espaces par des "-"
+}
+add_filter('slugify', 'default_slugify', 10, 1); // 10 = priorité | 1 = nombre de paramètres
+
+echo apply_filters('slugify', 'Test URL'); // Test-URL</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/add_filter/" target="_blank" class="info">Documentation add_filter</a>
+            <a href="https://developer.wordpress.org/reference/functions/apply_filters/" target="_blank" class="info">Documentation apply_filters</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>add_filter / apply_filters</h3>
+        <p>Il est ensuite possible de modifier le comportement en ajoutant de nouveaux filtres :</p>
+        <pre><code class="language-php">function lowercase_slugify(string $url): string {
+    return strtolower($url);
+}
+add_filter('slugify', 'lowercase_slugify', 5, 1); // Sera executé avant default_slugify
+
+function no_dash_slugify(string $url): string {
+    return str_replace('-', '', $url);
+}
+add_filter('slugify', 'no_dash_slugify', 11, 1); // ⚠️ La priorité doit être supérieure à 10</code></pre>
+    </section>
+
+    <section>
+        <h3>remove_filter</h3>
+        <p>Il est également possible de retirer un filtre :</p>
+        <pre><code class="language-php">remove_filter('slugify', 'default_slugify', 10);</code></pre>
+        <p>Cela peut-être pratique pour <strong>désactiver une fonctionnalité</strong> d'un plugin ou d'un thème parent.</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/remove_filter/" target="_blank" class="info">Documentation remove_filter</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>add_action / do_action</h3>
+        <p>Les fonctions <code class="language-php">add_action()</code> et <code class="language-php">do_action()</code> sont similaires à <code class="language-php">add_filter()</code> et <code class="language-php">apply_filters()</code>.</p>
+        <p>La seule différence est que contrairement aux filters, les actions <strong>ne retournent pas de valeur</strong>.</p>
+        <pre><code class="language-php">function default_greeting(): void {
+    $current_user = wp_get_current_user();
+    $user_name = $current_user->user_firstname ?? 'there';
+    echo "Hello $user_name!";
+}
+add_action('greeting', 'default_greeting', 10, 0);
+
+do_action('greeting');</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/add_action/" target="_blank" class="info">Documentation add_action</a>
+            <a href="https://developer.wordpress.org/reference/functions/do_action/" target="_blank" class="info">Documentation do_action</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>remove_action</h3>
+        <p>Tout comme <code class="language-php">remove_filter()</code> la fonction <code class="language-php">remove_action()</code> permet de supprimer une action.</p>
+        <pre><code class="language-php">remove_action('greeting', 'default_greeting', 10);
+
+add_action('greeting', function() {
+    echo "Bienvenue sur notre site internet !";
+}, 10, 0);</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/remove_action/" target="_blank" class="info">Documentation remove_action</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Exercices</h3>
+        <div class="instructions">
+            <ol>
+                <li>Utilisez le filtre <code class="language-php">the_content</code> pour transformer automatiquement "wordpress" en "WordPress".</li>
+                <li>Utilisez le filtre <code class="language-php">body_class</code> pour ajouter la classe "super-admin" lorsqu'un super admin est connecté.</li>
+                <li>Utilisez l'action <code class="language-php">wp_footer</code> pour ajouter le texte "Site créé par..." dans le footer.</li>
+                <li>Trouvez le filtre à utiliser pour modifier la taille de l'extrait des articles et définissez le nombre de caractères à 100.</li>
+            </ol>
+        </div>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/hooks/" target="_blank" class="info">Liste complète des hooks de WordPress</a>
+        </footer>
+    </section>
+
+</section>
