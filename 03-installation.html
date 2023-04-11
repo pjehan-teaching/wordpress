@@ -32,6 +32,60 @@
     </section>
 
     <section>
+        <h3>Installation avec Docker</h3>
+        <ol>
+            <li>Créer un dossier qui contiendra le site WordPress</li>
+            <li>
+                Copier/coller le code ci-dessous dans un fichier nommé <code>docker-compose.yml</code> :
+                <pre style="max-height: 40vh"><code class="language-yaml">version: '3.4'
+
+services:
+  database:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppass
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - database:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+
+  wordpress:
+    image: wordpress
+    restart: unless-stopped
+    depends_on:
+      - database
+    ports:
+      - "8000:80"
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppass
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+    volumes:
+      - wordpress:/var/www/html
+      - ./wp-content:/var/www/html/wp-content:rw
+
+volumes:
+  wordpress:
+  database:
+</code></pre>
+            </li>
+            <li>Démarrer les services avec la commande <code class="language-shell">docker compose up</code></li>
+        </ol>
+    </section>
+
+    <section>
         <h3>Installation de WordPress</h3>
         <ol>
             <li>Télécharger le fichier zip contenant les fichiers de Wordpress.</li>
