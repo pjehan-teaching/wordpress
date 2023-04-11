@@ -1,5 +1,5 @@
 import Prism from 'prismjs';
-import Chart from 'chart.js';
+import {Chart, CategoryScale, LinearScale, PieController, ArcElement, Legend, Tooltip} from 'chart.js';
 import './css/style.scss';
 require.context('./images', false, /\.(png|jpe?g|svg|gif)$/); // Import all images
 
@@ -19,7 +19,13 @@ document.getElementById('revealexpress').addEventListener('loaded', function(eve
     a.innerHTML = localhost;
   });
 
-  Chart.defaults.global.defaultFontSize = 22;
+  Chart.defaults.font.size = 22;
+  Chart.register(CategoryScale);
+  Chart.register(LinearScale);
+  Chart.register(PieController);
+  Chart.register(ArcElement);
+  Chart.register(Legend);
+  Chart.register(Tooltip);
 
   new Chart(document.getElementById('chart-cms').getContext('2d'), {
     type: 'pie',

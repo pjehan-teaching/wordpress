@@ -1,6 +1,6 @@
 # WordPress
 
-## Installation
+## Installation
 
 ```bash
 npm install -g revealexpress
