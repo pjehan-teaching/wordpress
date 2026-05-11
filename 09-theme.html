@@ -75,7 +75,7 @@ function my_theme_enqueue_styles() {
 
     <section id="layout">
         <h3>Layout - Le fichier header.php</h3>
-        <p>Les fichiers <code>header.php</code> et <code>footer.php</code> permettent de ségmenter le code source des pages.</p>
+        <p>Les fichiers <code>header.php</code> et <code>footer.php</code> permettent de segmenter le code source des pages.</p>
         <p>Voici un extrait type du fichier <code>header.php</code> :</p>
         <pre><code class="language-php">&lt;!DOCTYPE html&gt;
 &lt;html <?php language_attributes(); ?>&gt;
@@ -130,7 +130,7 @@ function my_theme_enqueue_styles() {
                     <code class="language-php">register_nav_menu()</code>
                     <code class="language-php">unregister_nav_menu()</code>
                 </td>
-                <td>Enregistré un nouvel emplacement pour un menu (visible côté admin).</td>
+                <td>Enregistrer un nouvel emplacement pour un menu (visible côté admin).</td>
             </tr>
             <tr>
                 <td>
@@ -207,7 +207,7 @@ function register_my_menu() {
                     <code class="language-php">register_sidebars()</code>
                     <code class="language-php">unregister_sidebar()</code>
                 </td>
-                <td>Enregistré un nouvel emplacement pour positionner des widgets (visible côté admin).</td>
+                <td>Enregistrer un nouvel emplacement pour positionner des widgets (visible côté admin).</td>
             </tr>
             <tr>
                 <td>
@@ -353,7 +353,7 @@ $the_query = new WP_Query(['post_type' => 'employee']); ?>
 
     <section>
         <h3>WP Query</h3>
-        <p>La classe <code class="language-php">WP_Query</code> permet de réaliser des requêtes relativement complexes avec la possiblité de filtrer par <strong>type de contenu</strong>, par <strong>taxonomie</strong> ou encore par un <strong>champ personnalisé</strong>.</p>
+        <p>La classe <code class="language-php">WP_Query</code> permet de réaliser des requêtes relativement complexes avec la possibilité de filtrer par <strong>type de contenu</strong>, par <strong>taxonomie</strong> ou encore par un <strong>champ personnalisé</strong>.</p>
         <p>Il est également possible de définir le <strong>tri</strong> qui sera effectué lors de la récupération des données :</p>
         <pre><code class="language-php">$the_query = new WP_Query([
     'post_type' => 'employee', // Récupérer les employés (Custom Post Type)
@@ -488,7 +488,7 @@ register_taxonomy('job', ['employee'], [...]);</code></pre>
                 ['key' => 'field_firstname', 'label' => 'Prénom', 'name' => 'firstname', 'type' => 'text'],
                 ['key' => 'field_lasstname', 'label' => 'Nom', 'name' => 'lastname', 'type' => 'text']
             ],
-            'location': [
+            'location' => [
                 [
                     ['param' => 'post_type', 'operator' => '==', 'value' => 'employee']
                 ]
