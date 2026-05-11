@@ -35,4 +35,34 @@ wp core install --url=localhost --title="Mon blog" --admin_user=admin --admin_pa
         <pre><code class="language-shell">wp media regenerate</code></pre>
     </section>
 
+    <section>
+        <h3>Sauvegarder un site</h3>
+        <p>Un backup complet d'un site WordPress comprend deux éléments : la <strong>base de données</strong> et les <strong>fichiers</strong>.</p>
+        <p>Sur le serveur distant :</p>
+        <pre><code class="language-shell">wp db export backup.sql
+tar -czf backup-files.tar.gz wp-content/</code></pre>
+        <p>Copier les fichiers en local puis restaurer :</p>
+        <pre><code class="language-shell">wp db import backup.sql
+tar -xzf backup-files.tar.gz</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/cli/commands/db/export/" class="info" target="_blank">Documentation wp db export</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Adapter le site en local</h3>
+        <p>Après l'import, les URLs pointent encore vers le serveur distant. La commande <code>wp search-replace</code> remplace toutes les occurrences dans la base de données, y compris dans les données sérialisées :</p>
+        <pre><code class="language-shell">wp search-replace 'https://mon-site.com' 'http://localhost:8000'</code></pre>
+        <p>Cette commande met également à jour les options <code>siteurl</code> et <code>home</code>. On peut les vérifier ou les modifier manuellement :</p>
+        <pre><code class="language-shell">wp option get siteurl
+wp option get home
+wp option update siteurl 'http://localhost:8000'
+wp option update home 'http://localhost:8000'</code></pre>
+        <p>Enfin, vider le cache :</p>
+        <pre><code class="language-shell">wp cache flush</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/cli/commands/search-replace/" class="info" target="_blank">Documentation wp search-replace</a>
+        </footer>
+    </section>
+
 </section>
