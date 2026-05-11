@@ -29,6 +29,45 @@ wp core install --url=localhost --title="Mon blog" --admin_user=admin --admin_pa
     </section>
 
     <section>
+        <h3>Plugins et thèmes</h3>
+        <p>WP-CLI permet de gérer les plugins et les thèmes sans passer par l'interface d'administration :</p>
+        <pre><code class="language-shell">wp plugin list
+wp plugin install contact-form-7 --activate
+wp plugin deactivate contact-form-7
+wp plugin update --all</code></pre>
+        <pre><code class="language-shell">wp theme list
+wp theme install twentytwentyfour --activate
+wp theme update --all</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/cli/commands/plugin/" class="info" target="_blank">Documentation wp plugin</a>
+            <a href="https://developer.wordpress.org/cli/commands/theme/" class="info" target="_blank">Documentation wp theme</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Mises à jour</h3>
+        <p>WP-CLI permet de mettre à jour l'ensemble d'un site WordPress en quelques commandes, ce qui facilite la <strong>maintenance de plusieurs sites</strong> ou l'<strong>automatisation</strong> via un script :</p>
+        <pre><code class="language-shell">wp core update
+wp core update-db
+wp plugin update --all
+wp theme update --all</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/cli/commands/core/update/" class="info" target="_blank">Documentation wp core update</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Gestion des utilisateurs</h3>
+        <p>Les commandes de gestion des utilisateurs sont particulièrement utiles lors d'une <strong>reprise de projet</strong> (mot de passe oublié, accès administrateur perdu...) :</p>
+        <pre><code class="language-shell">wp user list
+wp user create jean jean@example.com --role=administrator
+wp user update 1 --user_pass=nouveaumotdepasse</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/cli/commands/user/" class="info" target="_blank">Documentation wp user</a>
+        </footer>
+    </section>
+
+    <section>
         <h3>Regénérer les thumbnail</h3>
         <p>Si vous ajouter un nouveau format d'image dans un thème WordPress, il est nécessaire de regénérer les images déjà existantes.</p>
         <p>Des extensions permettent d'effectuer ce traitement mais l'utilisation de la ligne de commande peut être plus simple et plus rapide :</p>
