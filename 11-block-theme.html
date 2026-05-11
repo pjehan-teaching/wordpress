@@ -121,16 +121,34 @@ your-theme-name/
             <li>Personnalisation des styles globaux</li>
         </ul>
         <footer>
-            <a href="#" class="info">Les modifications faites dans l'éditeur sont stockées en base de données</a>
+            <a href="#" class="info">Les modifications faites dans l'éditeur sont stockées en BDD</a>
         </footer>
     </section>
 
     <section>
-        <h3>Créer un thème par blocs</h3>
-        <p>Le plugin <a href="https://wordpress.org/plugins/create-block-theme/" target="_blank">Create Block Theme</a> permet de générer un thème par blocs directement depuis l'interface d'administration de WordPress.</p>
-        <p>Pour démarrer un thème manuellement, il est également possible de s'appuyer sur le thème officiel <a href="https://wordpress.org/themes/twentytwentyfour/" target="_blank">Twenty Twenty-Four</a> comme référence.</p>
+        <h3>Environnement de développement - wp-env</h3>
+        <p><a href="https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-wp-env/" target="_blank">wp-env</a> est un outil officiel WordPress permettant de démarrer un environnement local <strong>basé sur Docker</strong> en une seule commande.</p>
+        <p>Prérequis : <strong>Node.js</strong> et <strong>Docker Desktop</strong></p>
+        <pre><code class="language-shell">npm -g install @wordpress/env</code></pre>
+        <p>Depuis le dossier du projet :</p>
+        <pre><code class="language-shell">wp-env start    # Démarre l'environnement (http://localhost:8888)
+wp-env stop     # Arrête l'environnement
+wp-env clean all  # Réinitialise la base de données
+wp-env destroy  # Supprime l'environnement</code></pre>
+        <p>Identifiants par défaut : <code>admin</code> / <code>password</code></p>
         <footer>
-            <a href="https://learn.wordpress.org/course/developing-with-the-wordpress-block-editor/" class="info" target="_blank">Cours officiel WordPress : Block Editor</a>
+            <a href="https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-wp-env/" class="info" target="_blank">Documentation wp-env</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Créer un thème FSE</h3>
+        <p>Une fois l'environnement démarré, installer le plugin <strong>Create Block Theme</strong> via WP-CLI :</p>
+        <pre><code class="language-shell">wp-env run cli wp plugin install create-block-theme --activate</code></pre>
+        <p>Puis dans l'administration WordPress (<code>Apparence > Créer un thème de blocs</code>), choisir <strong>Créer un thème vide</strong>, renseigner le nom du thème et valider.</p>
+        <p>Un nouveau dossier est généré dans <code>wp-content/themes/</code> avec les fichiers de base du thème. Il n'y a plus qu'à l'activer et commencer le développement dans l'éditeur de site.</p>
+        <footer>
+            <a href="https://wordpress.org/plugins/create-block-theme/" class="info" target="_blank">Create Block Theme</a>
         </footer>
     </section>
 
