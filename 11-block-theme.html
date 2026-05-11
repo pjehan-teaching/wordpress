@@ -1,0 +1,137 @@
+<section id="block-theme">
+
+    <section>
+        <h2>Thèmes par blocs</h2>
+        <h3>Full Site Editing (FSE)</h3>
+    </section>
+
+    <section>
+        <h3>L'éditeur de blocs</h3>
+        <p>Depuis WordPress 5.0 (2018), l'éditeur <strong>Gutenberg</strong> est l'éditeur par défaut. Il permet de composer des pages et des articles à l'aide de <strong>blocs</strong>.</p>
+        <p>Depuis WordPress 5.8 (2021), le <strong>Full Site Editing</strong> (FSE) étend cet éditeur à l'ensemble du site : header, footer, templates de page...</p>
+        <footer>
+            <a href="https://developer.wordpress.org/block-editor/" class="info" target="_blank">Documentation Block Editor</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Thème classique vs thème par blocs</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Thème classique</th>
+                    <th>Thème par blocs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Templates</th>
+                    <td>Fichiers PHP</td>
+                    <td>Fichiers HTML</td>
+                </tr>
+                <tr>
+                    <th>Configuration</th>
+                    <td><code>functions.php</code></td>
+                    <td><code>theme.json</code></td>
+                </tr>
+                <tr>
+                    <th>Édition</th>
+                    <td>Éditeur de code</td>
+                    <td>Éditeur de site (admin)</td>
+                </tr>
+                <tr>
+                    <th>Personnalisation</th>
+                    <td>PHP / CSS / JS</td>
+                    <td>Blocs + CSS</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h3>Structure d'un thème par blocs</h3>
+        <p>Un thème par blocs nécessite au minimum les fichiers suivants :</p>
+        <pre>
+your-theme-name/
+├── parts/              → Parties réutilisables (header, footer...)
+│   ├── header.html
+│   └── footer.html
+├── templates/          → Templates de page
+│   └── index.html      → Template par défaut (obligatoire)
+├── style.css           → Informations du thème (obligatoire)
+└── theme.json          → Configuration globale du thème
+        </pre>
+        <footer>
+            <a href="https://developer.wordpress.org/themes/block-themes/" class="info" target="_blank">Documentation Block Themes</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Le fichier theme.json</h3>
+        <p>Le fichier <code>theme.json</code> est le fichier de configuration central d'un thème par blocs. Il permet de définir les <strong>couleurs</strong>, les <strong>typographies</strong> et les <strong>espacements</strong> disponibles dans l'éditeur.</p>
+        <pre><code class="language-json">{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "color": {
+      "palette": [
+        { "name": "Primary", "slug": "primary", "color": "#0073aa" },
+        { "name": "Secondary", "slug": "secondary", "color": "#23282d" }
+      ]
+    },
+    "typography": {
+      "fontSizes": [
+        { "name": "Small", "slug": "small", "size": "0.875rem" },
+        { "name": "Normal", "slug": "normal", "size": "1rem" }
+      ]
+    }
+  }
+}</code></pre>
+        <footer>
+            <a href="https://developer.wordpress.org/themes/global-settings-and-styles/" class="info" target="_blank">Documentation theme.json</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Les templates</h3>
+        <p>Les templates sont des fichiers HTML situés dans le dossier <code>templates/</code>. Ils sont composés de <strong>commentaires WordPress</strong> représentant des blocs :</p>
+        <pre><code class="language-html">&lt;!-- wp:template-part {"slug":"header"} /--&gt;
+
+&lt;!-- wp:group {"tagName":"main"} --&gt;
+&lt;main class="wp-block-group"&gt;
+
+    &lt;!-- wp:post-title /--&gt;
+    &lt;!-- wp:post-content /--&gt;
+
+&lt;/main&gt;
+&lt;!-- /wp:group --&gt;
+
+&lt;!-- wp:template-part {"slug":"footer"} /--&gt;</code></pre>
+        <p>Les parties réutilisables (header, footer...) sont définies dans le dossier <code>parts/</code> et incluses via le bloc <code>wp:template-part</code>.</p>
+    </section>
+
+    <section>
+        <h3>L'éditeur de site</h3>
+        <p>L'<strong>éditeur de site</strong> (<code>Apparence > Éditeur</code>) permet de modifier visuellement les templates et les parties du thème <strong>sans écrire de code</strong>.</p>
+        <ul>
+            <li>Modification des templates existants</li>
+            <li>Création de nouveaux templates</li>
+            <li>Gestion des parties (header, footer...)</li>
+            <li>Personnalisation des styles globaux</li>
+        </ul>
+        <footer>
+            <a href="#" class="info">Les modifications faites dans l'éditeur sont stockées en base de données</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Créer un thème par blocs</h3>
+        <p>Le plugin <a href="https://wordpress.org/plugins/create-block-theme/" target="_blank">Create Block Theme</a> permet de générer un thème par blocs directement depuis l'interface d'administration de WordPress.</p>
+        <p>Pour démarrer un thème manuellement, il est également possible de s'appuyer sur le thème officiel <a href="https://wordpress.org/themes/twentytwentyfour/" target="_blank">Twenty Twenty-Four</a> comme référence.</p>
+        <footer>
+            <a href="https://learn.wordpress.org/course/developing-with-the-wordpress-block-editor/" class="info" target="_blank">Cours officiel WordPress : Block Editor</a>
+        </footer>
+    </section>
+
+</section>
