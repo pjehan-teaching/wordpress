@@ -13,7 +13,7 @@
         </ul>
         <p>Et peut éventuellement également proposer :</p>
         <ul>
-            <li>Une installation de WebPack pour la compilation des assets</li>
+            <li>Un bundler pour la compilation des assets (Vite, Webpack...)</li>
             <li>Un moteur de template (Twig, Blade...)</li>
             <li>Un gestion des dépendances front (NPM) et back (composer)</li>
             <li>Un système de live reloading</li>
@@ -24,17 +24,11 @@
 
     <section>
         <h3>Sage</h3>
-        <div class="container">
-            <div class="col" style="flex: 2;">
-                <p><a href="https://roots.io/sage" target="_blank">Sage</a> est un starter theme développé par une équipe de développeurs. Il s'agit d'un projet Open Source.</p>
-                <p>Il existe également un boilerplate <a href="https://roots.io/bedrock" target="_blank">Bedrock</a> développé par la même équipe.</p>
-            </div>
-            <div class="col">
-                <img src="assets/images/roots.svg" alt="Sage">
-            </div>
-        </div>
+        <p><a href="https://roots.io/sage" target="_blank">Sage</a> est un starter theme développé par une équipe de développeurs. Il s'agit d'un projet Open Source.</p>
+        <p>Il utilise <strong>Laravel Blade</strong> comme moteur de template, <strong>Vite</strong> pour la compilation des assets et s'appuie sur <strong>Acorn</strong> pour intégrer des fonctionnalités Laravel dans WordPress.</p>
+        <p>Il existe également un boilerplate <a href="https://roots.io/bedrock" target="_blank">Bedrock</a> développé par la même équipe.</p>
         <footer>
-            <a href="https://roots.io/sage-vs-underscores" class="info" target="_blank">Sage VS Underscores</a>
+            <a href="https://roots.io/sage" class="info" target="_blank">roots.io/sage</a>
         </footer>
     </section>
 
@@ -50,21 +44,25 @@ wp core install --url=localhost:8080 --title=Example --admin_user=admin --admin_
 cd wp-content/themes
 composer create-project roots/sage your-theme-name
 cd your-theme-name
-composer install
-npm install</code></pre>
+npm install
+npm run build</code></pre>
     </section>
 
     <section>
-        <h3>Création d'un nouveau thème</h3>
-        <p>Le fichier <code>resources/assets/config.json</code> contient la configuration principale permettant de gérer la compilation des assets, l'ouverture automatique du site dans le navigateur ou encore le système de Live Reloading.</p>
-        <p>Créer un nouveau fichier <code>resources/assets/config-local.json</code> et ajouter insérer ces lignes :</p>
-        <pre><code class="language-json">{
-  "publicPath": "/wp-content/themes/your-theme-name",
-  "devUrl": "http://localhost:8080"
-}</code></pre>
-        <pre><code class="language-shell">wp server
-npm start</code></pre>
+        <h3>Démarrer le serveur de développement</h3>
+        <p>La configuration du thème se fait dans le fichier <code>vite.config.js</code>. Il faut notamment y renseigner l'URL du site WordPress local :</p>
+        <pre><code class="language-js">/** @type {import('vite').UserConfig} */
+export default defineConfig({
+    // ...
+    server: {
+        host: 'localhost',
+    },
+});</code></pre>
+        <pre><code class="language-shell">npm run dev</code></pre>
         <p>Puis dans l'administration du site, activer le thème nouvellement installé.</p>
+        <footer>
+            <a href="https://roots.io/sage/docs/compiling-assets/" class="info" target="_blank">Documentation Vite / compilation des assets</a>
+        </footer>
     </section>
 
     <section>
@@ -72,47 +70,54 @@ npm start</code></pre>
         <pre>
 themes/your-theme-name/   + → Root of your Sage based theme
 ├── app/                  + → Theme PHP
-│   ├── controllers/      + → Controller files
-│   ├── admin.php         # → Theme customizer setup
-│   ├── filters.php       # → Theme filters (add_filter() functions and Blade system)
-│   ├── helpers.php       # → Helper functions
-│   └── setup.php         + → Theme setup (add_action() functions)
+│   ├── Providers/        + → Service Providers
+│   ├── View/             + → View Composers and Components
+│   ├── filters.php       # → Theme filters
+│   └── setup.php         # → Theme setup (add_action() functions)
 ├── config/               - → Theme configuration
-├── composer.json         # → Autoloading for `app/` files
-├── composer.lock         - → Composer lock file (never edit)
-├── dist/                 - → Built theme assets (never edit)
-├── node_modules/         - → Node.js packages (never edit)
-├── package.json          # → Node.js dependencies and scripts
+├── public/               - → Built theme assets (never edit)
 ├── resources/            # → Theme assets and templates
-│   ├── assets/           # → Front-end assets
-│   │   ├── config.json   # → Settings for compiled assets (config-local.json instead)
-│   │   ├── build/        - → Webpack and ESLint config
-│   │   ├── fonts/        + → Theme fonts
-│   │   ├── images/       + → Theme images
-│   │   ├── scripts/      + → Theme JS
-│   │   └── styles/       + → Theme stylesheets
-│   ├── functions.php     - → Composer autoloader, theme includes
-│   ├── index.php         - → Never manually edit
-│   ├── screenshot.png    + → Theme screenshot for WP admin
-│   ├── style.css         + → Theme meta information
-│   └── views/            + → Theme templates
+│   ├── css/              + → Theme CSS
+│   ├── fonts/            + → Theme fonts
+│   ├── images/           + → Theme images
+│   ├── js/               + → Theme JS
+│   └── views/            + → Blade templates
+│       ├── components/   + → Blade components
 │       ├── layouts/      + → Base templates
 │       └── partials/     + → Partial templates
-└── vendor/               - → Composer packages (never edit)
+├── vendor/               - → Composer packages (never edit)
+├── node_modules/         - → Node.js packages (never edit)
+├── composer.json         # → Composer dependencies
+├── functions.php         - → Composer autoloader
+├── index.php             - → Never manually edit
+├── package.json          # → Node.js dependencies and scripts
+├── screenshot.png        + → Theme screenshot for WP admin
+├── style.css             + → Theme meta information
+└── vite.config.js        # → Vite configuration
         </pre>
     </section>
 
     <section>
-        <h3>Controllers</h3>
-        <p>Le nom des controllers doit suivre la hiérarchie de WordPress (exemple : Home.php, Single.php, SingleMovie.php).</p>
-        <p>Le comportement diffère selon la visibilité de la méthode :</p>
-        <ul>
-            <li><code class="language-php">public function userInfo()</code> : La méthode devient une variable dans Blade et est accessible de cette façon : <code class="language-php">$user_info</code></li>
-            <li><code class="language-php">public static function getLastMovies()</code> : La méthode est accessible depuis un template Blade et peut être appelée de cette façon : <code class="language-php">SingleMovie::getLastMovies()</code></li>
-        </ul>
-        <p>Si la méthode a une visibilité <code class="language-php">protected</code> ou <code class="language-php">private</code> elle n'est alors accessible que dans la classe.</p>
+        <h3>View Composers</h3>
+        <p>Les <strong>View Composers</strong> permettent de passer des données à un template Blade. Ils sont définis dans le dossier <code>app/View/Composers/</code> et doivent suivre la hiérarchie de WordPress :</p>
+        <pre><code class="language-php">namespace App\View\Composers;
+
+use Roots\Acorn\View\Composer;
+
+class Single extends Composer
+{
+    protected static $views = ['single'];
+
+    public function with(): array
+    {
+        return [
+            'title' => get_the_title(),
+        ];
+    }
+}</code></pre>
+        <p>La variable <code class="language-php">$title</code> sera alors disponible dans le template Blade <code>single.blade.php</code>.</p>
         <footer>
-            <a href="https://github.com/soberwp/controller" class="info" target="_blank">Documentation</a>
+            <a href="https://roots.io/sage/docs/blade-templates/" class="info" target="_blank">Documentation Blade / View Composers</a>
         </footer>
     </section>
 
