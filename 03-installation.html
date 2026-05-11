@@ -37,11 +37,9 @@
             <li>Créer un dossier qui contiendra le site WordPress</li>
             <li>
                 Copier/coller le code ci-dessous dans un fichier nommé <code>docker-compose.yml</code> :
-                <pre style="max-height: 40vh"><code class="language-yaml">version: '3.4'
-
-services:
+                <pre style="max-height: 40vh"><code class="language-yaml">services:
   database:
-    image: mysql:5.7
+    image: mysql:8.0
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: wordpress
