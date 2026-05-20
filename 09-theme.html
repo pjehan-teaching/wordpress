@@ -9,8 +9,8 @@
             <li><a href="#sidebars">Sidebars (Widgets)</a></li>
             <li><a href="#page-templates">Templates de page</a></li>
             <li><a href="#custom-post-type">Custom Post Type</a></li>
-            <li><a href="#wp-query">WP Query</a></li>
             <li><a href="#taxonomy">Taxonomie</a></li>
+            <li><a href="#wp-query">WP Query</a></li>
             <li><a href="#custom-fields">Custom Fields (ACF)</a></li>
         </ol>
     </section>
@@ -301,6 +301,7 @@ function employees_cpt_init() {
         'labels' => ['name' => 'Employés', 'singular_name' => 'Employé', 'menu_name' => 'Employés'],
         'public' => true,
         'has_archive' => true,
+        'show_in_rest' => true,
         'rewrite' => ['slug' => 'employee'],
         'supports' => ['title', 'editor', 'thumbnail', 'excerpt'],
     ]);
@@ -322,6 +323,52 @@ function my_rewrite_flush() {
     employees_cpt_init(); // Appeler la fonction qui permet d'ajouter un CPT
     flush_rewrite_rules(); // Actualiser les permaliens
 }</code></pre>
+    </section>
+
+    <section id="taxonomy">
+        <h3>Taxonomies</h3>
+        <p>Définition d'une taxonomie :</p>
+        <blockquote>
+            <p>En informatique, le terme taxonomie (taxonomy en anglais) désigne une <strong>méthode de classification</strong> des informations dans une architecture structurée de manière évolutive. Le terme est couramment employé pour des systèmes de gestion de contenu (CMS).</p>
+            <cite>Wikipedia</cite>
+        </blockquote>
+        <p>Exemples : Couleur d'un produit, Taille d'un vêtement, Métier d'un employé...</p>
+    </section>
+
+    <section>
+        <h3>Taxonomies - La fonction register_taxonomy</h3>
+        <p>La fonction <code class="language-php">register_taxonomy()</code> permet d'ajouter une nouvelle taxonomie et de l'associer à un ou plusieurs types de contenus.</p>
+        <p>Le premier paramètre de cette fonction est un identifiant unique, le second et un tableau contenant la liste des types de contenus à associer à la taxonomie et le dernier paramètre est un tableau associatif contenant les paramètres de la taxonomie :</p>
+        <pre><code class="language-php" style="font-size: 0.8em;">add_action('init', 'job_taxonomy_init');
+function job_taxonomy_init() {
+    register_taxonomy('job', ['employee'], [
+        'label' => 'Métier',
+        'rewrite' => ['slug' => 'jobs'],
+        'hierarchical' => true,
+        'show_in_rest' => true,
+    ]);
+}</code></pre>
+        <p>Ce code peut être ajouté au fichier <code>functions.php</code> et doit être appelé via le hook <code>init</code>.</p>
+        <footer>
+            <a href="https://developer.wordpress.org/reference/functions/register_taxonomy" class="info" target="_blank">Documentation de la fonction register_taxonomy</a>
+        </footer>
+    </section>
+
+    <section>
+        <h3>Taxonomies - La fonction register_taxonomy</h3>
+        <p>Le second paramètre de la fonction <code class="language-php">register_taxonomy()</code> doit impérativement contenir un ou plusieurs identifiants correspondant à un type de contenu existant :</p>
+        <pre><code class="language-php" style="font-size: 0.8em;">register_post_type('employee', [...]);
+register_taxonomy('job', ['employee'], [...]);</code></pre>
+    </section>
+
+    <section>
+        <h3>Taxonomies - Afficher les taxonomies</h3>
+        <p>Pour afficher la liste des éléments d'une taxonomie liée à un contenu, vous pouvez utiliser l'une des deux fonctions suivantes :</p>
+        <ol>
+            <li><code class="language-php">the_terms()</code> : Cette fonction affiche le code HTML nécessaire pour afficher la liste des valeurs.</li>
+            <li><code class="language-php">get_the_terms()</code> : Cette fonction retourne un tableau PHP contenant une liste d'objet de type <code class="language-php">WP_Term</code>.</li>
+        </ol>
+        <p>Pour récupére l'ensemble des éléments d'une taxonomie, vous pouvez utiliser la fonction <code class="language-php">get_terms()</code>.</p>
     </section>
 
     <section id="wp-query">
@@ -367,51 +414,6 @@ $the_query = new WP_Query(['post_type' => 'employee']); ?>
     'orderby'   => 'title', // Triés par titre ascendant
     'order'     => 'ASC'
 ]);</code></pre>
-    </section>
-
-    <section id="taxonomy">
-        <h3>Taxonomies</h3>
-        <p>Définition d'une taxonomie :</p>
-        <blockquote>
-            <p>En informatique, le terme taxonomie (taxonomy en anglais) désigne une <strong>méthode de classification</strong> des informations dans une architecture structurée de manière évolutive. Le terme est couramment employé pour des systèmes de gestion de contenu (CMS).</p>
-            <cite>Wikipedia</cite>
-        </blockquote>
-        <p>Exemples : Couleur d'un produit, Taille d'un vêtement, Métier d'un employé...</p>
-    </section>
-
-    <section>
-        <h3>Taxonomies - La fonction register_taxonomy</h3>
-        <p>La fonction <code class="language-php">register_taxonomy()</code> permet d'ajouter une nouvelle taxonomie et de l'associer à un ou plusieurs types de contenus.</p>
-        <p>Le premier paramètre de cette fonction est un identifiant unique, le second et un tableau contenant la liste des types de contenus à associer à la taxonomie et le dernier paramètre est un tableau associatif contenant les paramètres de la taxonomie :</p>
-        <pre><code class="language-php" style="font-size: 0.8em;">add_action('init', 'job_taxonomy_init');
-function job_taxonomy_init() {
-    register_taxonomy('job', ['employee'], [
-        'label' => 'Métier',
-        'rewrite' => ['slug' => 'jobs'],
-        'hierarchical' => true
-    ]);
-}</code></pre>
-        <p>Ce code peut être ajouté au fichier <code>functions.php</code> et doit être appelé via le hook <code>init</code>.</p>
-        <footer>
-            <a href="https://developer.wordpress.org/reference/functions/register_taxonomy" class="info" target="_blank">Documentation de la fonction register_taxonomy</a>
-        </footer>
-    </section>
-
-    <section>
-        <h3>Taxonomies - La fonction register_taxonomy</h3>
-        <p>Le second paramètre de la fonction <code class="language-php">register_taxonomy()</code> doit impérativement contenir un ou plusieurs identifiants correspondant à un type de contenu existant :</p>
-        <pre><code class="language-php" style="font-size: 0.8em;">register_post_type('employee', [...]);
-register_taxonomy('job', ['employee'], [...]);</code></pre>
-    </section>
-
-    <section>
-        <h3>Taxonomies - Afficher les taxonomies</h3>
-        <p>Pour afficher la liste des éléments d'une taxonomie liée à un contenu, vous pouvez utiliser l'une des deux fonctions suivantes :</p>
-        <ol>
-            <li><code class="language-php">the_terms()</code> : Cette fonction affiche le code HTML nécessaire pour afficher la liste des valeurs.</li>
-            <li><code class="language-php">get_the_terms()</code> : Cette fonction retourne un tableau PHP contenant une liste d'objet de type <code class="language-php">WP_Term</code>.</li>
-        </ol>
-        <p>Pour récupére l'ensemble des éléments d'une taxonomie, vous pouvez utiliser la fonction <code class="language-php">get_terms()</code>.</p>
     </section>
 
     <section id="custom-fields">
